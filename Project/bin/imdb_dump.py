@@ -46,4 +46,7 @@ with gzip.open(input_file, 'rb') as f:
             print("line: " + str(f'{count: }') + ", " + str(f'{(count * 100 / 3140000000):03.2f}') + "%")
 
     file.close()
+
+os.system("cp ../etc/film_rdf.gz ../tmp/parse/film_dump_from_freebase_rdf.gz")
+
 print("DONE")

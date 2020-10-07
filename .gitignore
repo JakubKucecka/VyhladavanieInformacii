@@ -1,4 +1,5 @@
 Project/.idea/
 Project/etc/
 Project/tmp/parse
+Project/lib/__pycache__/*
 

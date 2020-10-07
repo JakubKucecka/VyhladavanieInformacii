@@ -9,11 +9,12 @@ import re
 locale.setlocale(locale.LC_ALL, '')
 
 # input_file = input("Enter full path your file: ")
-input_file = '../etc/film_dump_from_freebase_rdf.gz'
-output_file_actors = "../etc/parse/actors.gz"
-output_file_performances = "../etc/parse/performances.gz"
-output_file_other = "../etc/parse/other.gz"
-output_file_final = "../etc/parse/final.gz"
+input_file = '../tmp/parse/film_dump_from_freebase_rdf.gz'
+# input_file = '../tmp/parse/tmp_rdf.gz'
+actors_file = "../tmp/parse/actors.gz"
+performances_file = "../tmp/parse/performances.gz"
+other_file = "../tmp/parse/other.gz"
+final_file = "../tmp/parse/final.gz"
 
 
 def return_first_column(input_line):
@@ -28,7 +29,11 @@ def return_id(input_line):
 
 def return_name_or_date(input_line):
     tmp_line = re.split('[<>]', input_line)[4]
-    return re.split('"', tmp_line)[1]
+    name_or_date = re.split('"', tmp_line)[1]
+    if name_or_date:
+        return name_or_date
+    else:
+        return "NONE"
 
 
 def return_array(input_line):
@@ -54,14 +59,14 @@ def search():
     while not_end == "y":
         print("\nrun SEARCH...")
         print("\trun search...")
-        name1 = input("\nEnter first name: ")
-        name2 = input("Enter second name: ")
+        name_1 = input("\nEnter first name: ")
+        name_2 = input("Enter second name: ")
 
-        if name1.upper() == name2.upper():
+        if name_1.upper() == name_2.upper():
             print("ERROR: Enter diferent names")
             continue
 
-        with gzip.open(output_file_final, 'rb') as f:
+        with gzip.open(final_file, 'rb') as f:
             persons = []
             num_of_actors = 0
 
@@ -69,7 +74,7 @@ def search():
                 decode_line = line.decode("utf-8")
                 array_line = return_array(decode_line)
 
-                if array_line[0].upper() == name1.upper() or array_line[0].upper() == name2.upper():
+                if array_line[0].upper() == name_1.upper() or array_line[0].upper() == name_2.upper():
                     con = 0
                     i = -1
                     for actor in persons:
@@ -87,23 +92,26 @@ def search():
                         num_of_actors += 1
 
             if num_of_actors < 2:
-                print("ERROR: The actors " + name1 + " or " + name2 + " not found")
+                print("ERROR: The actors " + name_1 + " or " + name_2 + " not found")
             else:
                 if datetime.strptime(persons[0][2], '%Y-%m-%d') <= datetime.strptime(persons[1][3], '%Y-%m-%d') \
                         and datetime.strptime(persons[1][2], '%Y-%m-%d') <= datetime.strptime(persons[0][3], '%Y-%m-%d'):
-                    films_array = []
-                    for film_p1 in persons[0][4:]:
-                        for film_p2 in persons[1][4:]:
-                            if film_p1.upper() == film_p2.upper():
-                                films_array.append(film_p1)
 
-                    films = ','.join(films_array)
+                    films = ""
+                    if len(persons[0]) > 4 and len(persons[1]) > 4:
+                        films_array = []
+                        for film_p1 in persons[0][4:]:
+                            for film_p2 in persons[1][4:]:
+                                if film_p1.upper() == film_p2.upper():
+                                    films_array.append(film_p1)
+
+                        films = ','.join(films_array)
                     if films:
-                        print("Actors " + name1 + " and " + name2 + " played together in films: " + films)
+                        print("Actors " + name_1 + " and " + name_2 + " played together in films: " + films)
                     else:
-                        print("ERROR: The actors " + name1 + " and " + name2 + " did not play together")
+                        print("ERROR: The actors " + name_1 + " and " + name_2 + " did not play together")
                 else:
-                    print("ERROR: The actors " + name1 + " and " + name2
+                    print("ERROR: The actors " + name_1 + " and " + name_2
                           + "  could not play together because they did not live at the same time")
 
         not_end = input("\nDo you want to continue? [y|n]: ")
@@ -115,9 +123,9 @@ cmd = input("You want to run a dump? [y|n]: ")
 if cmd == "y":
     # print("run DUMP...")
     # with gzip.open(input_file, 'rb') as f:
-    #     fa = open_file(output_file_actors)
-    #     fp = open_file(output_file_performances)
-    #     fo = open_file(output_file_other)
+    #     fa = open_file(actors_file)
+    #     fp = open_file(performances_file)
+    #     fo = open_file(other_file)
     #     count = 0
     #
     #     for line in f:
@@ -126,17 +134,17 @@ if cmd == "y":
     #         count += 1
     #
     #         if re.search(
-    #                 "^<http://rdf.freebase.com/ns/[m|g][.].*>[ ]*<http://rdf[.]freebase[.]com/ns/film[.]actor[.]film.*>[ ]*<.*>.*$",
+    #                 "^<http://rdf.freebase.com/ns/.*>[ ]*<http://rdf\.freebase\.com/ns/film\.actor\.film.*>[ ]*<.*>.*$",
     #                 decode_line):
     #             fa.write(decode_line)
     #         elif re.search(
-    #                 "^<http://rdf.freebase.com/ns/[m|g][.].*>[ ]*<http://rdf[.]freebase[.]com/ns/film[.]performance[.]film.*>[ ]*<.*>.*$",
+    #                 "^<http://rdf.freebase.com/ns/.*>[ ]*<http://rdf\.freebase\.com/ns/film\.performance\.film.*>[ ]*<.*>.*$",
     #                 decode_line):
     #             fp.write(decode_line)
-    #         elif re.search("<http://rdf[.]freebase[.]com/ns/type[.]object[.]name>", decode_line) \
-    #                 or re.search("<http://rdf[.]freebase[.]com/ns/common[.]topic[.]alias>", decode_line) \
-    #                 or re.search("<http://rdf[.]freebase[.]com/ns/people[.]person[.]date_of_birth>", decode_line) \
-    #                 or re.search("<http://rdf[.]freebase[.]com/ns/people[.]deceased_person[.]date_of_death>", decode_line):
+    #         elif re.search("<http://rdf\.freebase\.com/ns/type\.object\.name>", decode_line) \
+    #                 or re.search("<http://rdf\.freebase\.com/ns/common\.topic\.alias>", decode_line) \
+    #                 or re.search("<http://rdf\.freebase\.com/ns/people\.person\.date_of_birth>", decode_line) \
+    #                 or re.search("<http://rdf\.freebase\.com/ns/people\.deceased_person\.date_of_death>", decode_line):
     #             fo.write(decode_line)
     #
     #         if count % 1000000 == 0:
@@ -153,7 +161,7 @@ if cmd == "y":
     FILM_ID_NAME = {}
 
     print("\trun parse actors...")
-    with gzip.open(output_file_actors, 'rb') as f:
+    with gzip.open(actors_file, 'rb') as f:
         for line in f:
             decode_line = line.decode("utf-8")
             first_col = return_first_column(decode_line)
@@ -164,7 +172,7 @@ if cmd == "y":
                 ACTOR[first_col]['films'][last_col] = ""
 
     print("\trun parse performances...")
-    with gzip.open(output_file_performances, 'rb') as f:
+    with gzip.open(performances_file, 'rb') as f:
         for line in f:
             decode_line = line.decode("utf-8")
             first_col = return_first_column(decode_line)
@@ -174,7 +182,7 @@ if cmd == "y":
                 PERF_FILM[first_col] = last_col
 
     print("\trun parse other...")
-    with gzip.open(output_file_other, 'rb') as f:
+    with gzip.open(other_file, 'rb') as f:
         for line in f:
             decode_line = line.decode("utf-8")
             first_col = return_first_column(decode_line)
@@ -193,8 +201,8 @@ if cmd == "y":
                         and first_col not in FILM_ID_NAME:
                     FILM_ID_NAME[first_col] = return_name_or_date(decode_line)
 
-    print("\nrun PARRING...")
-    print("\trun parring...")
+    print("\nrun PAIRING...")
+    print("\trun pairing...")
     for actor_key, actor_value in ACTOR.items():
         for film_key in actor_value['films'].keys():
             if film_key in PERF_FILM:
@@ -203,9 +211,10 @@ if cmd == "y":
 
     print("\nrun SORT, WRITE AND INDEXING...")
     print("\trun sort...")
-    sorted(ACTOR)
+    ACTOR = {k: v for k, v in sorted(ACTOR.items(), key=lambda item: item[1]['name'])}
+    # sorted(ACTOR)
     print("\trun write...")
-    f = open_file(output_file_final)
+    f = open_file(final_file)
     for actor_key, actor_value in ACTOR.items():
         if actor_value['name']:
             line = "<" + actor_value['name'] + ">"
