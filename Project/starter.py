@@ -6,9 +6,9 @@ import lib.pair as pair
 import lib.sort as sort
 import lib.search as search
 
-# input_file = input("Enter full path your file: ")
-input_file = 'tmp/parse/film_dump_from_freebase_rdf.gz'
+# input_file = 'tmp/parse/film_dump_from_freebase_rdf.gz'
 # input_file = 'tmp/parse/tmp_rdf.gz'
+input_file = 'tmp/tmp_film.gz'
 actors_file = "tmp/parse/actors.gz"
 performances_file = "tmp/parse/performances.gz"
 other_file = "tmp/parse/other.gz"
@@ -20,6 +20,7 @@ FILM_ID_NAME = {}
 
 cmd = input("\nDo you want to run a dump? [y|n]: ")
 if cmd == "y":
+    # input_file = input("Enter full path your file: ")
     dump.dump(input_file, actors_file, performances_file, other_file)
 elif cmd != "n":
     print("ERROR: Unknown input")
