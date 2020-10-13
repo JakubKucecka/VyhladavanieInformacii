@@ -32,10 +32,6 @@ def dump(input_file, actors_file, performances_file, other_file):
                     or re.search("<http://rdf\.freebase\.com/ns/people\.deceased_person\.date_of_death>", decode_line):
                 fo.write(decode_line)
 
-#            if count % 1000000 == 0:
-#                print("line: " + str(f'{count:n}') + ", " + str(f'{(count * 100 / 114328618):03.2f}') + "%")
-#
-#        print("line: " + str(f'{count: }') + ", " + str(f'{(count * 100 / 114328618):03.2f}') + "%")
         fa.close()
         fp.close()
         fo.close()

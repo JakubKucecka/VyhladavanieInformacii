@@ -10,7 +10,7 @@ Nasledne staci spustit priaz na spustenie scriptu starter.py.
 Naslendne sa nas to opyta na zopar otazkok, kde je potrebne vzdy zadat "y" ako yes a ak sa nas opyta na mena ta zadat mena.
 
 ## Prva implementacia
-V prvej implementacii mam v subore Project/tmp/tmp_film.gz ukazkovy zoparriadkovy archiv, z ktoreho budeme citat.
+V prvej implementacii mam v subore Project/tmp/parse/tmp_film.gz ukazkovy zoparriadkovy archiv, z ktoreho budeme citat. Tento subor sa postupne rozbija do suborov Project/tmp/parse/actor.gz a Project/tmp/parse/other.gz. A tieto zasa postupne spojim do vysledneho suboru Project/tmp/parse/final.gz, z ktoreho sa vyhladava.
 
 Mam pripravene tri pkrilady:
   - ak zadame mena **Bill Moor**, **Carole Bouquet** alebo **Victor Argo** program vypise v akom filme spolu hrali
