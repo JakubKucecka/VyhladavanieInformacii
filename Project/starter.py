@@ -8,7 +8,7 @@ import lib.search as search
 
 # input_file = 'tmp/parse/film_dump_from_freebase_rdf.gz'
 # input_file = 'tmp/parse/tmp_rdf.gz'
-input_file = 'tmp/tmp_film.gz'
+input_file = "tmp/parse/tmp_film.gz"
 actors_file = "tmp/parse/actors.gz"
 performances_file = "tmp/parse/performances.gz"
 other_file = "tmp/parse/other.gz"

@@ -3,6 +3,7 @@
 from datetime import datetime
 import gzip
 import lib.handler as handler
+import re
 
 
 def search(final_file):
@@ -26,14 +27,26 @@ def search(final_file):
                 decode_line = line.decode("utf-8")
                 array_line = handler.return_array(decode_line)
 
-                if array_line[0].upper() == name_1.upper() or array_line[0].upper() == name_2.upper():
+                if name_1.upper() in array_line[0].upper().split(', ') \
+                        or name_2.upper() in array_line[0].upper().split(', ') \
+                        or name_1.upper() in array_line[1].upper().split(', ') \
+                        or name_2.upper() in array_line[1].upper().split(', '):
                     con = 0
                     i = -1
                     for actor in persons:
                         i += 1
-                        if array_line[0] == actor[0]:
-                            con = 1
-                            break
+                        for film_name in actor[0].split(', '):
+                            if film_name.upper() in array_line[0].upper().split(', ') \
+                                    or film_name.upper() in array_line[1].upper().split(', '):
+                                con = 1
+                                break
+
+                        if not con:
+                            for film_name in actor[1].split(', '):
+                                if re.search(film_name.upper(), array_line[0].upper()) \
+                                        or re.search(film_name.upper(), array_line[1].upper()):
+                                    con = 1
+                                    break
 
                     if con:
                         for j in array_line[4:]:
@@ -51,16 +64,22 @@ def search(final_file):
                                                                                               '%Y-%m-%d'):
 
                     films = ""
+                    ids = []
                     if len(persons[0]) > 4 and len(persons[1]) > 4:
                         films_array = []
                         for film_p1 in persons[0][4:]:
                             for film_p2 in persons[1][4:]:
-                                if film_p1.upper() == film_p2.upper():
-                                    films_array.append(film_p1)
+                                if film_p1[:film_p1.index('@')].upper() == film_p2[:film_p2.index('@')].upper():
+                                    if film_p1[film_p1.index('@'):] not in ids:
+                                        ids.append(film_p1[film_p1.index('@'):])
+                                        films_array.append(film_p1[:film_p1.index('@')])
 
-                        films = ','.join(films_array)
+                        films = ', '.join(films_array)
+                        films = films.encode(encoding='UTF-8', errors='strict')
+
                     if films:
-                        print("Actors " + name_1 + " and " + name_2 + " played together in films: " + films)
+                        print("Actors " + name_1 + " and " + name_2 + " played together in films: "
+                              + films.decode(encoding='UTF-8', errors='strict'))
                     else:
                         print("ERROR: The actors " + name_1 + " and " + name_2 + " did not play together")
                 else:
