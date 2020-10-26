@@ -6,7 +6,7 @@ import lib.handler as handler
 def sort(ACTOR, final_file):
     print("\nrun SORT, WRITE AND INDEXING...")
     print("\trun sort...")
-    ACTOR = {k: v for k, v in sorted(ACTOR.items(), key=lambda item: item[1]['name'][0])}
+    ACTOR = {k: v for k, v in sorted(ACTOR.items(), key=lambda item: item[1]['name'])}
     # sorted(ACTOR)
     print("\trun write...")
     f = handler.open_file(final_file)

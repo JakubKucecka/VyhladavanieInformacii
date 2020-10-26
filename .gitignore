@@ -2,5 +2,7 @@ Project/.idea/
 Project/etc/
 Project/tmp/parse/film_dump_from_freebase_rdf.gz
 Project/tmp/parse/tmp_rdf.gz
+Project/tmp/parse/other.gz
+Project/tmp/parse/final.gz
 Project/lib/__pycache__/
 

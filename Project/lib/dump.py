@@ -32,6 +32,9 @@ def dump(input_file, actors_file, performances_file, other_file):
                     or re.search("<http://rdf\.freebase\.com/ns/people\.deceased_person\.date_of_death>", decode_line):
                 fo.write(decode_line)
 
+            if count % 1000000 == 0:
+                print("Read: " + str(count / 1000000) + "M lines from file: " + input_file)
+
         fa.close()
         fp.close()
         fo.close()
