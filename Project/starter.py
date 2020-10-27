@@ -6,13 +6,14 @@ import lib.pair as pair
 import lib.sort as sort
 import lib.search as search
 
-input_file = 'D:/STU/VI/Project/tmp/parse/film_dump_from_freebase_rdf.gz'
-# input_file = 'D:/STU/VI/Project/tmp/parse/tmp_film.gz'
-actors_file = "D:/STU/VI/Project/tmp/parse/actors.gz"
-performances_file = "D:/STU/VI/Project/tmp/parse/performances.gz"
-other_file = "D:/STU/VI/Project/tmp/parse/other.gz"
-final_actor_file = "D:/STU/VI/Project/tmp/parse/final_actor.gz"
-final_film_file = "D:/STU/VI/Project/tmp/parse/final_film.gz"
+# D:/STU/VI/Project/
+input_file = "tmp/parse/film_dump_from_freebase_rdf.gz"
+# input_file = "tmp/parse/tmp_film.gz"
+actors_file = "tmp/parse/actors.gz"
+performances_file = "tmp/parse/performances.gz"
+other_file = "tmp/parse/other.gz"
+final_actor_file = "tmp/parse/final_actor.gz"
+final_film_file = "tmp/parse/final_film.gz"
 
 ACTOR = {}
 PERF_FILM = {}
@@ -47,5 +48,4 @@ elif cmd != "n":
     print("ERROR: Unknown input")
     exit(1)
 
-print("\nDone")
 exit(0)
