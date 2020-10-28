@@ -60,7 +60,7 @@ def pars(actors_file, performances_file, other_file, ACTOR, PERF_FILM, FILM_ID_N
                                decode_line):
                     ACTOR[first_col]['d_date'] = handler.return_name_or_date(decode_line)
             else:
-                if re.search("<http://rdf[.]freebase[.]com/ns/type[.]object[.]name>", decode_line)\
+                if re.search("<http://rdf[.]freebase[.]com/ns/type[.]object[.]name>", decode_line) \
                         or re.search("<http://rdf[.]freebase[.]com/ns/common[.]topic[.]alias>", decode_line):
                     film = handler.return_name_or_date(decode_line)
                     if first_col not in FILM_ID_NAME:

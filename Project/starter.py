@@ -29,7 +29,8 @@ elif cmd != "n":
 
 cmd = input("\nDo you want to run a pars, pair and sort? [y|n]: ")
 if cmd == "y":
-    [ACTOR, PERF_FILM, FILM_ID_NAME] = pars.pars(actors_file, performances_file, other_file, ACTOR, PERF_FILM, FILM_ID_NAME)
+    [ACTOR, PERF_FILM, FILM_ID_NAME] = pars.pars(actors_file, performances_file, other_file, ACTOR, PERF_FILM,
+                                                 FILM_ID_NAME)
 
     ACTOR = pair.pair(ACTOR, PERF_FILM)
 
