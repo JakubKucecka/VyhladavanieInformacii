@@ -26,8 +26,8 @@ def index(index_dir_actor, index_dir_film, actor_file, film_file):
             count += 1
 
             array_line = handler.return_array(decode_line)
-            names = array_line[0].split('\t ') if array_line[0] != "NONE" else []
-            aliases = array_line[1].split('\t ') if array_line[1] != "NONE" else []
+            names = array_line[0].split('\t') if array_line[0] != "NONE" else []
+            aliases = array_line[1].split('\t') if array_line[1] != "NONE" else []
             writer_actor.add_document(names="\t".join(names + aliases),
                                       data=array_line[2:4],
                                       films=array_line[4:])
@@ -121,7 +121,7 @@ def search_film(index_dir_film, query_str):
     with ix.searcher() as searcher:
         query = SimpleParser("id", ix.schema).parse(query_str)
 
-        results = searcher.search(query, terms=True)
+        results = searcher.search(query, terms=True, limit=100)
 
         for r in results:
             films_array.append(r['names'])

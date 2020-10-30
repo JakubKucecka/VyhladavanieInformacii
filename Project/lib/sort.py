@@ -12,9 +12,9 @@ def sort(ACTOR, FILM_ID_NAME, final_actor_file, final_film_file):
     f = handler.open_file(final_actor_file)
     for actor_key, actor_value in ACTOR.items():
         if actor_value['name']:
-            names = '\t '.join(actor_value['name'])
+            names = '\t'.join(actor_value['name'])
             line = "<" + names + ">"
-            aliases = '\t '.join(actor_value['alias'])
+            aliases = '\t'.join(actor_value['alias'])
             line += " <" + aliases + ">" if aliases else " <NONE>"
             line += " <" + actor_value['b_date'] + ">" if actor_value['b_date'] else " <0001-01-01>"
             line += " <" + actor_value['d_date'] + ">" if actor_value['d_date'] else " <NOW>"
@@ -28,7 +28,7 @@ def sort(ACTOR, FILM_ID_NAME, final_actor_file, final_film_file):
     f = handler.open_file(final_film_file)
     for film_key, film_value in FILM_ID_NAME.items():
         line = "<" + film_key + ">"
-        films = '\t '.join(film_value)
+        films = '\t'.join(film_value)
         line += " <" + films + ">" if films else " <NONE>"
         f.write(line)
         f.write("\n")
