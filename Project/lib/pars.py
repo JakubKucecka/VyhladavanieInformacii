@@ -55,10 +55,18 @@ def pars(actors_file, performances_file, other_file, ACTOR, PERF_FILM, FILM_ID_N
                                 break
                         ACTOR[first_col]['alias'].append(alias)
                 elif re.search("<http://rdf[.]freebase[.]com/ns/people[.]person[.]date_of_birth>", decode_line):
-                    ACTOR[first_col]['b_date'] = handler.return_name_or_date(decode_line)
+                    date = handler.return_name_or_date(decode_line)
+                    if len(date) == 4:
+                        date += "-01-01"
+                    if len(date) == 10:
+                        ACTOR[first_col]['b_date'] = date
                 elif re.search("<http://rdf[.]freebase[.]com/ns/people[.]deceased_person[.]date_of_death>",
                                decode_line):
-                    ACTOR[first_col]['d_date'] = handler.return_name_or_date(decode_line)
+                    date = handler.return_name_or_date(decode_line)
+                    if len(date) == 4:
+                        date += "-01-01"
+                    if len(date) == 10:
+                        ACTOR[first_col]['d_date'] = date
             else:
                 if re.search("<http://rdf[.]freebase[.]com/ns/type[.]object[.]name>", decode_line) \
                         or re.search("<http://rdf[.]freebase[.]com/ns/common[.]topic[.]alias>", decode_line):

@@ -35,10 +35,10 @@ def dump(input_file, actors_file, performances_file, other_file):
                     '<http://rdf\.freebase\.com/ns/common\.topic\.alias>[ ]*"[a-zA-Z0-9á-žÁ-ŽА-Яа-я,.\'_ ]+".*',
                     decode_line) \
                         or re.search(
-                    'http://rdf\.freebase\.com/ns/people\.person\.date_of_birth>[ ]*"[a-zA-Z0-9á-žÁ-ŽА-Яа-я,.\'\-_ ]+".*',
+                    'http://rdf\.freebase\.com/ns/people\.person\.date_of_birth>[ ]*"[a-zA-Z0-9á-žÁ-ŽА-Яа-я,.\'\-_]+".*',
                     decode_line) \
                         or re.search(
-                    'http://rdf\.freebase\.com/ns/people\.deceased_person\.date_of_death>[ ]*"[a-zA-Z0-9á-žÁ-ŽА-Яа-я,.\'\-_ ]+".*',
+                    'http://rdf\.freebase\.com/ns/people\.deceased_person\.date_of_death>[ ]*"[a-zA-Z0-9á-žÁ-ŽА-Яа-я,.\'\-_]+".*',
                     decode_line):
                     fo.write(decode_line)
 
