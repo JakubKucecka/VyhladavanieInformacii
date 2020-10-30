@@ -71,7 +71,7 @@ def search_actor(index_dir_actor, query_str):
 
         if len(results) != 0:
             if len(results) > 1:
-                print("I find more lie one " + query_str + ", didn't you mean?")
+                print("I find more then one " + query_str + ", didn't you mean?")
                 j = 1
                 for r in results:
                     actors_array.append({'names': r['names'], 'data': r['data'], 'films': r['films'],
