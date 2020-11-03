@@ -1,17 +1,18 @@
 import gzip
 import os
-from whoosh.qparser import QueryParser, SimpleParser
+from whoosh.qparser import QueryParser
 from whoosh.analysis import SimpleAnalyzer
 from whoosh.index import create_in, open_dir
-from whoosh.fields import Schema, TEXT, ID, STORED
+from whoosh.fields import Schema, TEXT, STORED
 
 from lib import handler
 
 
-def index(index_dir_actor, index_dir_film, actor_file, film_file):
+def index(index_dir_actor, actor_file):
     print("\trun index...")
-    schema = Schema(names=TEXT(stored=True, analyzer=SimpleAnalyzer(expression=r"[\w,.'\-_ ]+")), data=STORED,
-                    films=STORED)
+    analyzer = SimpleAnalyzer(expression=r"[\w,.'\-_ ]+")
+    schema = Schema(names=TEXT(stored=True, analyzer=analyzer), data=STORED,
+                    films=TEXT(stored=True, analyzer=analyzer))
     if not os.path.exists(index_dir_actor):
         os.mkdir(index_dir_actor)
 
@@ -30,32 +31,11 @@ def index(index_dir_actor, index_dir_film, actor_file, film_file):
             aliases = array_line[1].split('\t') if array_line[1] != "NONE" else []
             writer_actor.add_document(names="\t".join(names + aliases),
                                       data=array_line[2:4],
-                                      films=array_line[4:])
+                                      films="@".join(array_line[4:]))
 
-    print("\t\trun write index actor...")
+    print("\t\twrite index...")
     writer_actor.commit()
     del writer_actor
-
-    schema = Schema(id=ID(stored=True), names=STORED)
-    if not os.path.exists(index_dir_film):
-        os.mkdir(index_dir_film)
-
-    ix = create_in(index_dir_film, schema)
-    writer_film = ix.writer()
-
-    with gzip.open(film_file, 'rb') as f:
-        count = 0
-
-        for line in f:
-            decode_line = line.decode("utf-8")
-            count += 1
-
-            array_line = handler.return_array(decode_line)
-            writer_film.add_document(id=array_line[0], names=array_line[1])
-
-    print("\t\trun write index film...")
-    writer_film.commit()
-    del writer_film
 
 
 def search_actor(index_dir_actor, query_str):
@@ -114,16 +94,96 @@ def search_actor(index_dir_actor, query_str):
         return actors_array[i]
 
 
-def search_film(index_dir_film, query_str):
-    ix = open_dir(index_dir_film)
-    films_array = []
+def search_film(index_dir_actor, query_str):
+    ix = open_dir(index_dir_actor)
+    actors_array = []
+    films_array = {}
+    cmd = 'n'
 
     with ix.searcher() as searcher:
-        query = SimpleParser("id", ix.schema).parse(query_str)
+        query = QueryParser("films", ix.schema).parse('"' + query_str + '"')
 
-        results = searcher.search(query, terms=True, limit=100)
+        results = searcher.search(query, terms=True, limit=None)
 
-        for r in results:
-            films_array.append(r['names'])
+        if len(results) != 0:
+            for r in results:
+                for films in r['films'].split('@'):
+                    for f in films.split('\t'):
+                        if query == f.lower():
+                            if not films_array[f]:
+                                films_array[films.split('\t')[0]] = {'names': [r['names'].split('\t')[0]],
+                                                                     'films': r['films']}
+                            else:
+                                films_array[films.split('\t')[0]]['names'].append(r['names'].split('\t')[0])
+                            # actors_array.append({'name': r['names'].split('\t')[0], 'film': str(query)[str(query).index(":") + 1:]})
 
-    return films_array
+            if len(films_array) > 1:
+                print("I find more then one " + query_str + ", didn't you mean?")
+                j = 1
+                for f in films_array:
+                    print("\t[" + str(j) + "] " + str(query)[str(query).index(":") + 1:] + " -> "
+                          + ", ".join(f['films'][1:]))
+                    j += 1
+
+                cmd = input("Enter num of movie or 'e' for end: ")
+                if cmd == 'e':
+                    return -2
+                else:
+                    j = 0
+                    for f in films_array:
+                        if j == int(cmd) - 1:
+                            actors_array = f['names']
+                            break
+            else:
+                for f in films_array:
+                    actors_array = f['names']
+        else:
+            corrected = searcher.correct_query(query, query_str)
+
+            if corrected.query != query:
+                cmd = input("I didn't find " + query_str + ", didn't you mean "
+                            + str(query)[str(corrected.query).index(":") + 1:] + "? [y|n]: ")
+                if cmd == "y":
+                    results = searcher.search(corrected.query, terms=True, limit=None)
+                    if len(results) != 0:
+                        for r in results:
+                            for films in r['films'].split('@'):
+                                for f in films.split('\t'):
+                                    if query == f.lower():
+                                        if not films_array[f]:
+                                            films_array[films.split('\t')[0]] = {'names': [r['names'].split('\t')[0]],
+                                                                                 'films': r['films']}
+                                        else:
+                                            films_array[films.split('\t')[0]]['names'].append(r['names'].split('\t')[0])
+                                        # actors_array.append({'name': r['names'].split('\t')[0], 'film': str(query)[str(query).index(":") + 1:]})
+
+                        if len(films_array) > 1:
+                            print("I find more then one " + query_str + ", didn't you mean?")
+                            j = 1
+                            for f in films_array:
+                                print("\t[" + str(j) + "] " + str(query)[str(query).index(":") + 1:] + " -> "
+                                      + ", ".join(f['films'][1:]))
+                                j += 1
+
+                            cmd = input("Enter num of movie or 'e' for end: ")
+                            if cmd == 'e':
+                                return -2
+                            else:
+                                j = 0
+                                for f in films_array:
+                                    if j == int(cmd) - 1:
+                                        actors_array = f['names']
+                                        break
+                        else:
+                            for f in films_array:
+                                actors_array = f['names']
+                    else:
+                        return -1
+                else:
+                    return -1
+
+    if cmd != "y" and cmd != "n":
+        print("ERROR: Unknown input")
+        exit(1)
+    else:
+        return actors_array

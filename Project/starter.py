@@ -8,15 +8,14 @@ import lib.index as index
 import lib.search as search
 
 # D:/STU/VyhladavanieInformacii/Project/
-input_file = "tmp/parse/film_dump_from_freebase_rdf.gz"
+input_file = '../../VI_data/freebase-rdf-latest.gz'
+# input_file = "tmp/parse/film_dump_from_freebase_rdf.gz"
 # input_file = "tmp/parse/tmp_film.gz"
 actors_file = "tmp/parse/actors.gz"
 performances_file = "tmp/parse/performances.gz"
 other_file = "tmp/parse/other.gz"
-final_actor_file = "tmp/parse/final_actor.gz"
-final_film_file = "tmp/parse/final_film.gz"
-index_dir_actor = "etc/index/actor"
-index_dir_film = "etc/index/film"
+final_file = "tmp/parse/final.gz"
+index_dir = "etc/index"
 
 ACTOR = {}
 PERF_FILM = {}
@@ -34,12 +33,12 @@ cmd = input("\nDo you want to run a pars, pair and sort? [y|n]: ")
 if cmd == "y":
     [ACTOR, PERF_FILM, FILM_ID_NAME] = pars.pars(actors_file, performances_file, other_file, ACTOR, PERF_FILM,
                                                  FILM_ID_NAME)
-    ACTOR = pair.pair(ACTOR, PERF_FILM)
-    del PERF_FILM
-    sort.sort(ACTOR, FILM_ID_NAME, final_actor_file, final_film_file)
+    ACTOR = pair.pair(ACTOR, PERF_FILM, FILM_ID_NAME)
+    sort.sort(ACTOR, final_file)
     del ACTOR
     del FILM_ID_NAME
-    index.index(index_dir_actor, index_dir_film, final_actor_file, final_film_file)
+    del PERF_FILM
+    index.index(index_dir, final_file)
 
 elif cmd != "n":
     print("ERROR: Unknown input")
@@ -47,7 +46,7 @@ elif cmd != "n":
 
 cmd = input("\nDo you want to run a search? [y|n]: ")
 if cmd == "y":
-    ret = search.search(index_dir_actor, index_dir_film)
+    ret = search.search(index_dir)
     if ret != "n":
         print("ERROR: Unknown input")
         exit(1)

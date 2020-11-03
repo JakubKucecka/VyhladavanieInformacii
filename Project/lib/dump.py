@@ -2,6 +2,7 @@
 
 import gzip
 import lib.handler as handler
+import locale
 import re
 
 
@@ -43,7 +44,7 @@ def dump(input_file, actors_file, performances_file, other_file):
                     fo.write(decode_line)
 
                 if count % 1000000 == 0:
-                    print("Read: " + str(count / 1000000) + "M lines from file: " + input_file)
+                    print("line: " + str(f'{count / 1000000: }') + "M, " + str(f'{(count * 100 / 3140000000):03.2f}') + "%")
 
             fa.close()
             fp.close()
