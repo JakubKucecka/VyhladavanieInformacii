@@ -1,5 +1,6 @@
 Project/.idea
 Project/etc
+Project/tmp
 Project/tmp/parse/film_dump_from_freebase_rdf.gz
 Project/lib/__pycache__/
 Project/venv

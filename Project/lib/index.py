@@ -4,22 +4,31 @@ from whoosh.qparser import QueryParser
 from whoosh.analysis import SimpleAnalyzer
 from whoosh.index import create_in, open_dir
 from whoosh.fields import Schema, TEXT, STORED
-
 from lib import handler
 
+"""
+funkcia na indexaciu suboru
 
-def index(index_dir_actor, actor_file):
+vstup:
+  cesta k suboru kam sa ulozi index a cesta k suboru k finalnemu dampu
+
+vystup:
+  vymazana premenna a index zapisany v subore
+"""
+
+
+def index(index_dir, final_file):
     print("\trun index...")
-    analyzer = SimpleAnalyzer(expression=r"[\w,.'\-_ ]+")
+    analyzer = SimpleAnalyzer(expression=r"[\w,.\"\\\-:\'_ ]+")
     schema = Schema(names=TEXT(stored=True, analyzer=analyzer), data=STORED,
                     films=TEXT(stored=True, analyzer=analyzer))
-    if not os.path.exists(index_dir_actor):
-        os.mkdir(index_dir_actor)
+    if not os.path.exists(index_dir):
+        os.mkdir(index_dir)
 
-    ix = create_in(index_dir_actor, schema)
+    ix = create_in(index_dir, schema)
     writer_actor = ix.writer()
 
-    with gzip.open(actor_file, 'rb') as f:
+    with gzip.open(final_file, 'rb') as f:
         count = 0
 
         for line in f:
@@ -38,8 +47,19 @@ def index(index_dir_actor, actor_file):
     del writer_actor
 
 
-def search_actor(index_dir_actor, query_str):
-    ix = open_dir(index_dir_actor)
+"""
+funkcia vyhladava hercov a ich filmy
+
+vstup:
+  cesta k indexu a vstupny string, koty sa ma vyhladat
+
+vystup:
+  zoznam filmov pre daneho herca
+"""
+
+
+def search_actor(index_dir, query_str):
+    ix = open_dir(index_dir)
     actors_array = []
     i = 0
     cmd = ''
@@ -94,8 +114,19 @@ def search_actor(index_dir_actor, query_str):
         return actors_array[i]
 
 
-def search_film(index_dir_actor, query_str):
-    ix = open_dir(index_dir_actor)
+"""
+funkcia vyhladava podla nazvu filmu
+
+vstup:
+    cesta k indexu a vsutny retazec
+
+vystup:
+    pole hercov, ktory hraju vo vyhladavanom filme
+"""
+
+
+def search_film(index_dir, query_str):
+    ix = open_dir(index_dir)
     actors_array = []
     films_array = {}
     cmd = 'n'
@@ -109,20 +140,23 @@ def search_film(index_dir_actor, query_str):
             for r in results:
                 for films in r['films'].split('@'):
                     for f in films.split('\t'):
-                        if query == f.lower():
-                            if not films_array[f]:
+                        if str(query)[str(query).index(":") + 1:] == f.lower():
+                            if films.split('\t')[0] not in films_array:
                                 films_array[films.split('\t')[0]] = {'names': [r['names'].split('\t')[0]],
                                                                      'films': r['films']}
                             else:
                                 films_array[films.split('\t')[0]]['names'].append(r['names'].split('\t')[0])
-                            # actors_array.append({'name': r['names'].split('\t')[0], 'film': str(query)[str(query).index(":") + 1:]})
-
             if len(films_array) > 1:
                 print("I find more then one " + query_str + ", didn't you mean?")
                 j = 1
-                for f in films_array:
+                for f in films_array.values():
+                    film_string = ""
+                    for film_list in f['films'].split('@'):
+                        for film_from_list in film_list.split('\t'):
+                            if str(query)[str(query).index(":") + 1:] == film_from_list.lower():
+                                film_string = ", ".join(film_list.split('\t')[1:])
                     print("\t[" + str(j) + "] " + str(query)[str(query).index(":") + 1:] + " -> "
-                          + ", ".join(f['films'][1:]))
+                          + film_string)
                     j += 1
 
                 cmd = input("Enter num of movie or 'e' for end: ")
@@ -130,12 +164,15 @@ def search_film(index_dir_actor, query_str):
                     return -2
                 else:
                     j = 0
-                    for f in films_array:
+                    for f in films_array.values():
                         if j == int(cmd) - 1:
                             actors_array = f['names']
                             break
+                        j += 1
+
+                    cmd = 'n'
             else:
-                for f in films_array:
+                for f in films_array.values():
                     actors_array = f['names']
         else:
             corrected = searcher.correct_query(query, query_str)
@@ -149,20 +186,26 @@ def search_film(index_dir_actor, query_str):
                         for r in results:
                             for films in r['films'].split('@'):
                                 for f in films.split('\t'):
-                                    if query == f.lower():
-                                        if not films_array[f]:
+                                    if str(corrected.query)[str(corrected.query).index(":") + 1:] == f.lower():
+                                        if films.split('\t')[0] not in films_array:
                                             films_array[films.split('\t')[0]] = {'names': [r['names'].split('\t')[0]],
                                                                                  'films': r['films']}
                                         else:
                                             films_array[films.split('\t')[0]]['names'].append(r['names'].split('\t')[0])
-                                        # actors_array.append({'name': r['names'].split('\t')[0], 'film': str(query)[str(query).index(":") + 1:]})
 
                         if len(films_array) > 1:
                             print("I find more then one " + query_str + ", didn't you mean?")
                             j = 1
-                            for f in films_array:
-                                print("\t[" + str(j) + "] " + str(query)[str(query).index(":") + 1:] + " -> "
-                                      + ", ".join(f['films'][1:]))
+                            for f in films_array.values():
+                                film_string = ""
+                                for film_list in f['films'].split('@'):
+                                    for film_from_list in film_list.split('\t'):
+                                        if str(corrected.query)[
+                                           str(corrected.query).index(":") + 1:] == film_from_list.lower():
+                                            film_string = ", ".join(film_list.split('\t')[1:])
+                                print("\t[" + str(j) + "] " + str(corrected.query)[
+                                                              str(corrected.query).index(":") + 1:] + " -> "
+                                      + film_string)
                                 j += 1
 
                             cmd = input("Enter num of movie or 'e' for end: ")
@@ -170,17 +213,22 @@ def search_film(index_dir_actor, query_str):
                                 return -2
                             else:
                                 j = 0
-                                for f in films_array:
+                                for f in films_array.values():
                                     if j == int(cmd) - 1:
                                         actors_array = f['names']
                                         break
+                                    j += 1
+
+                                cmd = 'n'
                         else:
-                            for f in films_array:
+                            for f in films_array.values():
                                 actors_array = f['names']
                     else:
                         return -1
                 else:
                     return -1
+            else:
+                return -1
 
     if cmd != "y" and cmd != "n":
         print("ERROR: Unknown input")

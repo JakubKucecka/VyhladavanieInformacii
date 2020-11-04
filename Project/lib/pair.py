@@ -1,6 +1,15 @@
 #!/usr/bin/env python3
 
 
+"""
+funkcia paruje dictionary
+
+vstup:
+    dictionary ACTOR, PERF_FILM, FILM_ID_NAME
+
+vystup:
+    finalna podoba dictionary ACTOR
+"""
 def pair(ACTOR, PERF_FILM, FILM_ID_NAME):
     print("\nrun PAIRING...")
     print("\trun pairing...")

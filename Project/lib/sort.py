@@ -3,12 +3,21 @@
 import lib.handler as handler
 
 
-def sort(ACTOR, final_actor_file):
+"""
+funkcia usporiadava dictionary ACTOR, zapisuje ho v prislusnom tvare do suboru
+
+vstup:
+    dictionary ACTOR a cesta k finalnemu suboru
+    
+vystup:
+    subor je zapisany
+"""
+def sort(ACTOR, final_file):
     print("\nrun SORT, WRITE AND INDEXING...")
     print("\trun sort...")
     ACTOR = {k: v for k, v in sorted(ACTOR.items(), key=lambda item: item[1]['name'])}
     print("\trun write...")
-    f = handler.open_file(final_actor_file)
+    f = handler.open_file(final_file)
     for actor_key, actor_value in ACTOR.items():
         if actor_value['name']:
             names = '\t'.join(actor_value['name'])
@@ -23,12 +32,3 @@ def sort(ACTOR, final_actor_file):
             f.write(line)
             f.write("\n")
     f.close()
-    #
-    # f = handler.open_file(final_film_file)
-    # for film_key, film_value in FILM_ID_NAME.items():
-    #     line = "<" + film_key + ">"
-    #     films = '\t'.join(film_value)
-    #     line += " <" + films + ">" if films else " <NONE>"
-    #     f.write(line)
-    #     f.write("\n")
-    # f.close()

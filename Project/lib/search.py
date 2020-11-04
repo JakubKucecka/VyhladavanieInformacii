@@ -4,7 +4,18 @@ from datetime import datetime
 import lib.index as index
 
 
-def search(actor_index):
+"""
+vyhladavanie podla nazvu zilmu alebo herca
+
+vstup:
+    cesta k indexu
+    
+vystup:
+    zoznam hercov, ktory hraju vo vyhladavanom filme
+    zoznam filmov, v ktorych hraju dvaja herci
+    dovod preco spolu nejaky herci nemuzu hrat
+"""
+def search(index_dir):
     not_end = "y"
 
     while not_end == "y":
@@ -15,16 +26,16 @@ def search(actor_index):
         if cmd == "m":
             name = input("\nEnter name of movie: ")
 
-            actors = index.search_film(actor_index, name)
+            actors = index.search_film(index_dir, name)
 
             if not actors or actors == -1:
                 print("I didn't find the movie")
                 not_end = input("\nDo you want to continue? [y|n]: ")
                 continue
             if actors != -2:
-                print("\nIn film " + actors[0]['film'] + " played:")
+                print("\nIn film " + name + " played:")
                 for a in actors:
-                    print("\t" + a['name'])
+                    print("\t" + a)
             else:
                 break
 
@@ -43,7 +54,7 @@ def search(actor_index):
                 if actors and name.upper() in pref_names:
                     print("\nWARN: actor " + pref_name + " and actor " + name + " can be the same person!")
 
-                actors.append(index.search_actor(actor_index, name))
+                actors.append(index.search_actor(index_dir, name))
                 if actors[i] == -1 or actors[i] == -2:
                     break
 
@@ -82,19 +93,18 @@ def search(actor_index):
                             break
 
                 if films:
-                    # film_names = index.search_film(film_index, " ".join(films))
                     print("\nActors: \n\t" + name_1 + " -> " + ", ".join(actor_1['names'].split('\t'))
                           + "\n\t" + name_2 + " -> " + ", ".join(actor_2['names'].split('\t'))
                           + "\nplayed together in films:")
                     for f in films:
-                        print("\t" + f.split('\t')[1] + " -> " + ", ".join(f.split('\t')[2:]))
+                        string_1 = ""
+                        string_2 = ""
+                        if len(f) > 1:
+                            string_1 = f.split('\t')[1]
+                        if len(f) > 2:
+                            string_2 = ", ".join(f.split('\t')[2:])
+                        print("\t" + string_1 + " -> " + string_2)
                 else:
-                    # actor_1_film_names = ""     #index.search_film(film_index, " ".join(actor_1['films']))
-                    # for f in actor_1['films']:
-                    #     actor_1_film_names += f[0] + " "
-                    # actor_2_film_names = ""     #index.search_film(film_index, " ".join(actor_2['films']))
-                    # for f in actor_2['films']:
-                    #     actor_2_film_names += f[0] + " "
                     actor_1_films = []
                     actor_2_films = []
 
