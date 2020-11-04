@@ -174,8 +174,8 @@ def search_film(index_dir, query_str):
             corrected = searcher.correct_query(query, query_str)
 
             if corrected.query != query:
-                cmd = input("I didn't find " + query_str + ", didn't you mean "
-                            + str(query)[str(corrected.query).index(":") + 1:] + "? [y|n]: ")
+                cmd = input("I didn't find '" + query_str + "', didn't you mean '"
+                            + str(corrected.query)[str(corrected.query).index(":") + 1:] + "'? [y|n]: ")
                 if cmd == "y":
                     results = searcher.search(corrected.query, terms=True, limit=None)
                     if len(results) != 0:
