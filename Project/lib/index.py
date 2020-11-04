@@ -56,13 +56,11 @@ vstup:
 vystup:
   zoznam filmov pre daneho herca
 """
-
-
 def search_actor(index_dir, query_str):
     ix = open_dir(index_dir)
     actors_array = []
     i = 0
-    cmd = ''
+    cmd = '0'
 
     with ix.searcher() as searcher:
         query = QueryParser("names", ix.schema).parse('"' + query_str + '"')
@@ -106,7 +104,7 @@ def search_actor(index_dir, query_str):
                 else:
                     return -1
 
-    if cmd == "e":
+    if not cmd.isdigit() or cmd == "e":
         return -2
     else:
         if cmd:
@@ -123,8 +121,6 @@ vstup:
 vystup:
     pole hercov, ktory hraju vo vyhladavanom filme
 """
-
-
 def search_film(index_dir, query_str):
     ix = open_dir(index_dir)
     actors_array = []
@@ -160,7 +156,7 @@ def search_film(index_dir, query_str):
                     j += 1
 
                 cmd = input("Enter num of movie or 'e' for end: ")
-                if cmd == 'e':
+                if cmd == 'e' or not cmd.isdigit():
                     return -2
                 else:
                     j = 0
@@ -209,7 +205,7 @@ def search_film(index_dir, query_str):
                                 j += 1
 
                             cmd = input("Enter num of movie or 'e' for end: ")
-                            if cmd == 'e':
+                            if cmd == 'e' or not cmd.isdigit():
                                 return -2
                             else:
                                 j = 0
@@ -225,8 +221,10 @@ def search_film(index_dir, query_str):
                                 actors_array = f['names']
                     else:
                         return -1
-                else:
+                elif cmd == "n":
                     return -1
+                else:
+                    return -2
             else:
                 return -1
 

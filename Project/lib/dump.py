@@ -42,26 +42,25 @@ def dump(input_file, actors_file, performances_file, other_file):
                     if control_film > 0:
                         for l in lines:
                             if re.search(
-                                    r"^<http://rdf.freebase.com/ns/.*>[ ]*<http://rdf\.freebase\.com/ns/film\.actor\.film.*>[ ]*<.*>.*$",
-                                    l):
+                                    r"<.*>.+<http://rdf\.freebase\.com/ns/film\.actor\.film>.+<.*>", l):
                                 fa.write(l)
                             elif re.search(
-                                    r"^<http://rdf.freebase.com/ns/.*>[ ]*<http://rdf\.freebase\.com/ns/film\.performance\.film.*>[ ]*<.*>.*$",
-                                    l):
+                                    r"<.*>.+<http://rdf\.freebase\.com/ns/film\.performance\.film>.+<.*>", l):
                                 fp.write(l)
                             elif re.search(
-                                    r'<http://rdf\.freebase\.com/ns/type\.object\.name>[ ]*"[a-zA-Z0-9á-žÁ-ŽА-Яа-я,.\"\\\-:\'_ ]+".*',
+                                    r'<http://rdf\.freebase\.com/ns/type\.object\.name>.+"[a-zA-Z0-9á-žÁ-ŽА-Яа-я,.\"\\\-:\'_ ]+".*',
                                     l) \
                                     or re.search(
-                                r'<http://rdf\.freebase\.com/ns/common\.topic\.alias>.*\"[a-zA-Z0-9á-žÁ-ŽА-Яа-я,.\"\\\-:\'_ ]+\".*',
+                                r'<http://rdf\.freebase\.com/ns/common\.topic\.alias>.+\"[a-zA-Z0-9á-žÁ-ŽА-Яа-я,.\"\\\-:\'_ ]+\".*',
                                 l) \
                                     or re.search(
-                                r'http://rdf\.freebase\.com/ns/people\.person\.date_of_birth>[ ]*\"[a-zA-Z0-9á-žÁ-ŽА-Яа-я,.\"\\\-:\'_ ]+\".*',
+                                r'http://rdf\.freebase\.com/ns/people\.person\.date_of_birth>.+\"[a-zA-Z0-9á-žÁ-ŽА-Яа-я,.\"\\\-:\'_ ]+\".*',
                                 l) \
                                     or re.search(
-                                r'http://rdf\.freebase\.com/ns/people\.deceased_person\.date_of_death>[ ]*\"[a-zA-Z0-9á-žÁ-ŽА-Яа-я,.\"\\\-:\'_ ]+\".*',
+                                r'http://rdf\.freebase\.com/ns/people\.deceased_person\.date_of_death>.+\"[a-zA-Z0-9á-žÁ-ŽА-Яа-я,.\"\\\-:\'_ ]+\".*',
                                 l):
                                 fo.write(l)
+
                     lines = []
                     actual_id = resolve_id
                     lines.append(decode_line)

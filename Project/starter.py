@@ -12,8 +12,8 @@ globalne premenne, ktore urcuju cesty k suborom
 """
 # D:/STU/VyhladavanieInformacii/Project/
 # input_file = '../../VI_data/freebase-rdf-latest.gz'
-# input_file = "etc/parse/film_dump_from_freebase_rdf.gz"
-input_file = "etc/parse/tmp_film.gz"
+input_file = "etc/parse/film_dump_from_freebase_rdf.gz"
+# input_file = "etc/parse/tmp_film.gz"
 actors_file = "etc/parse/actors.gz"
 performances_file = "etc/parse/performances.gz"
 other_file = "etc/parse/other.gz"
