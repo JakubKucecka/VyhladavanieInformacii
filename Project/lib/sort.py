@@ -26,9 +26,11 @@ def sort(ACTOR, final_file):
             line += " <" + aliases + ">" if aliases else " <NONE>"
             line += " <" + actor_value['b_date'] + ">" if actor_value['b_date'] else " <0001-01-01>"
             line += " <" + actor_value['d_date'] + ">" if actor_value['d_date'] else " <NOW>"
+            writed_films = []
             for film_value in actor_value['films'].values():
-                if film_value != "NONE":
+                if film_value != "NONE" and film_value[0] not in writed_films:
                     line += " <" + "\t".join(film_value) + ">"
+                    writed_films.append(film_value[0])
             f.write(line)
             f.write("\n")
     f.close()
