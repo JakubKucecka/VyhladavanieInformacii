@@ -7,13 +7,13 @@ from whoosh.fields import Schema, TEXT, STORED
 from lib import handler
 
 """
-funkcia na indexaciu suboru
+file indexing function
 
-vstup:
-  cesta k suboru kam sa ulozi index a cesta k suboru k finalnemu dampu
+input:
+  the path to the file where the index is stored and the path to the file to the final damp
 
-vystup:
-  vymazana premenna a index zapisany v subore
+output:
+  deleted variable and index written in file
 """
 
 
@@ -48,14 +48,16 @@ def index(index_dir, final_file):
 
 
 """
-funkcia vyhladava hercov a ich filmy
+The feature searches for actors and their movies
 
-vstup:
-  cesta k indexu a vstupny string, koty sa ma vyhladat
+input:
+  index path and input string to search for
 
-vystup:
-  zoznam filmov pre daneho herca
+output:
+  list of films for the actor
 """
+
+
 def search_actor(index_dir, query_str):
     ix = open_dir(index_dir)
     actors_array = []
@@ -113,14 +115,16 @@ def search_actor(index_dir, query_str):
 
 
 """
-funkcia vyhladava podla nazvu filmu
+the function searches by movie title
 
-vstup:
-    cesta k indexu a vsutny retazec
+input:
+    path to the index and the entire string
 
-vystup:
-    pole hercov, ktory hraju vo vyhladavanom filme
+output:
+    a field of actors starring in a sought-after film
 """
+
+
 def search_film(index_dir, query_str):
     ix = open_dir(index_dir)
     actors_array = []

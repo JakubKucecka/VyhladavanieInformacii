@@ -4,16 +4,17 @@ import gzip
 import lib.handler as handler
 import re
 
-
 """
-podla regexov vybera riadky z prislusnych suborov a uklada ich do dictionary
+according to regex, it selects lines from the appropriate files and stores them in the dictionary
 
-vstup:
-    cesty k suborom, a dictionary, ktore sa naplnia
+input:
+    paths to files, and a dictionary to fill
     
-vystup:
-    vytvorene dictionary
+output:
+    created dictionary
 """
+
+
 def pars(actors_file, performances_file, other_file, ACTOR, PERF_FILM, FILM_ID_NAME):
     print("\nrun PARSE...")
 

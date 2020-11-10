@@ -8,11 +8,9 @@ import lib.index as index
 import lib.search as search
 
 """
-globalne premenne, ktore urcuju cesty k suborom
+global variables that determine the paths to files
 """
-input_file = '../../VI_data/freebase-rdf-latest.gz'
-# input_file = "etc/parse/film_dump_from_freebase_rdf.gz"
-# input_file = "etc/parse/tmp_film.gz"
+input_file = 'tmp/freebase-rdf-latest.gz'
 actors_file = "etc/parse/actors.gz"
 performances_file = "etc/parse/performances.gz"
 other_file = "etc/parse/other.gz"
@@ -20,14 +18,14 @@ final_file = "etc/parse/final.gz"
 index_dir = "etc/index"
 
 """
-inicializacia dictionary
+initialization dictionary
 """
 ACTOR = {}
 PERF_FILM = {}
 FILM_ID_NAME = {}
 
 """
-spustanie funkcie dump
+run the dump function
 """
 cmd = input("\nDo you want to run a dump? [y|n]: ")
 if cmd == "y":
@@ -38,7 +36,7 @@ elif cmd != "n":
     exit(1)
 
 """
-spustanie funkcie pars, pair a sort/write/index
+run the pars, pair, and sort / write / index functions
 """
 cmd = input("\nDo you want to run a pars, pair and sort? [y|n]: ")
 if cmd == "y":
@@ -56,7 +54,7 @@ elif cmd != "n":
     exit(1)
 
 """
-spustanie funkcie na vyhladavanie
+launch the search function
 """
 cmd = input("\nDo you want to run a search? [y|n]: ")
 if cmd == "y":

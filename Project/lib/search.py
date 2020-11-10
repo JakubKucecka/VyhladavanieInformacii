@@ -3,18 +3,19 @@
 from datetime import datetime
 import lib.index as index
 
-
 """
-vyhladavanie podla nazvu zilmu alebo herca
+search by movie title or actor
 
-vstup:
-    cesta k indexu
+input:
+    path to index
     
-vystup:
-    zoznam hercov, ktory hraju vo vyhladavanom filme
-    zoznam filmov, v ktorych hraju dvaja herci
-    dovod preco spolu nejaky herci nemuzu hrat
+output:
+    a list of actors starring in the movie you're looking for
+    a list of films starring two actors
+    reason why some actors can't play together
 """
+
+
 def search(index_dir):
     not_end = "y"
 

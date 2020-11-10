@@ -4,16 +4,17 @@ import gzip
 import lib.handler as handler
 import re
 
-
 """
-podla regexov deli riadky do prislusnych suborov
+according to regex, it divides the rows into appropriate files
 
-vstup:
-    cesta k prislusnym suborom
+input:
+    path to the relevant files
     
-vystup:
-    zapisane subory
+output:
+    registered files
 """
+
+
 def dump(input_file, actors_file, performances_file, other_file):
     cmd = input("\nAre you sure you want to overwrite the other.gz, performance.gz and actor.gz files? [y|n]: ")
     if cmd == "y":
@@ -67,32 +68,32 @@ def dump(input_file, actors_file, performances_file, other_file):
                 else:
                     lines.append(decode_line)
 
-            # for line in f:
-            #
-            #     decode_line = line.decode("utf-8")
-            #     count += 1
-            #
-            #     if re.search(
-            #             r"^<http://rdf.freebase.com/ns/.*>[ ]*<http://rdf\.freebase\.com/ns/film\.actor\.film.*>[ ]*<.*>.*$",
-            #             decode_line):
-            #         fa.write(decode_line)
-            #     elif re.search(
-            #             r"^<http://rdf.freebase.com/ns/.*>[ ]*<http://rdf\.freebase\.com/ns/film\.performance\.film.*>[ ]*<.*>.*$",
-            #             decode_line):
-            #         fp.write(decode_line)
-            #     elif re.search(
-            #             r'<http://rdf\.freebase\.com/ns/type\.object\.name>[ ]*"[a-zA-Z0-9á-žÁ-ŽА-Яа-я,.\"\\\-:\'_ ]+".*',
-            #             decode_line) \
-            #             or re.search(
-            #         r'<http://rdf\.freebase\.com/ns/common\.topic\.alias>.*\"[a-zA-Z0-9á-žÁ-ŽА-Яа-я,.\"\\\-:\'_ ]+\".*',
-            #         decode_line) \
-            #             or re.search(
-            #         r'http://rdf\.freebase\.com/ns/people\.person\.date_of_birth>[ ]*\"[a-zA-Z0-9á-žÁ-ŽА-Яа-я,.\"\\\-:\'_ ]+\".*',
-            #         decode_line) \
-            #             or re.search(
-            #         r'http://rdf\.freebase\.com/ns/people\.deceased_person\.date_of_death>[ ]*\"[a-zA-Z0-9á-žÁ-ŽА-Яа-я,.\"\\\-:\'_ ]+\".*',
-            #         decode_line):
-            #         fo.write(decode_line)
+                # for line in f:
+                #
+                #     decode_line = line.decode("utf-8")
+                #     count += 1
+                #
+                #     if re.search(
+                #             r"^<http://rdf.freebase.com/ns/.*>[ ]*<http://rdf\.freebase\.com/ns/film\.actor\.film.*>[ ]*<.*>.*$",
+                #             decode_line):
+                #         fa.write(decode_line)
+                #     elif re.search(
+                #             r"^<http://rdf.freebase.com/ns/.*>[ ]*<http://rdf\.freebase\.com/ns/film\.performance\.film.*>[ ]*<.*>.*$",
+                #             decode_line):
+                #         fp.write(decode_line)
+                #     elif re.search(
+                #             r'<http://rdf\.freebase\.com/ns/type\.object\.name>[ ]*"[a-zA-Z0-9á-žÁ-ŽА-Яа-я,.\"\\\-:\'_ ]+".*',
+                #             decode_line) \
+                #             or re.search(
+                #         r'<http://rdf\.freebase\.com/ns/common\.topic\.alias>.*\"[a-zA-Z0-9á-žÁ-ŽА-Яа-я,.\"\\\-:\'_ ]+\".*',
+                #         decode_line) \
+                #             or re.search(
+                #         r'http://rdf\.freebase\.com/ns/people\.person\.date_of_birth>[ ]*\"[a-zA-Z0-9á-žÁ-ŽА-Яа-я,.\"\\\-:\'_ ]+\".*',
+                #         decode_line) \
+                #             or re.search(
+                #         r'http://rdf\.freebase\.com/ns/people\.deceased_person\.date_of_death>[ ]*\"[a-zA-Z0-9á-žÁ-ŽА-Яа-я,.\"\\\-:\'_ ]+\".*',
+                #         decode_line):
+                #         fo.write(decode_line)
 
                 if count % 1000000 == 0:
                     print("line: " + str(f'{count / 1000000: }') + "M, " + str(

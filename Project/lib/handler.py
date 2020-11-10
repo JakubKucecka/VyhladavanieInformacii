@@ -7,6 +7,10 @@ import re
 
 locale.setlocale(locale.LC_ALL, '')
 
+"""
+in file are function from cut string to one or more arrays and open .gz files
+"""
+
 
 def return_first_column(input_line):
     tmp_line = re.split('[<>]', input_line)[1]

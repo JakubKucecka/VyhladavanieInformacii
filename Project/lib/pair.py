@@ -2,14 +2,16 @@
 
 
 """
-funkcia paruje dictionary
+the function pairs the dictionary
 
-vstup:
-    dictionary ACTOR, PERF_FILM, FILM_ID_NAME
+input:
+     dictionary ACTOR, PERF_FILM, FILM_ID_NAME
 
-vystup:
-    finalna podoba dictionary ACTOR
+output:
+     final form dictionary ACTOR
 """
+
+
 def pair(ACTOR, PERF_FILM, FILM_ID_NAME):
     print("\nrun PAIRING...")
     print("\trun pairing...")

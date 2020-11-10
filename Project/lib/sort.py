@@ -2,16 +2,17 @@
 
 import lib.handler as handler
 
-
 """
-funkcia usporiadava dictionary ACTOR, zapisuje ho v prislusnom tvare do suboru
+the function organizes the ACTOR dictionary, writes it in the appropriate form to the file
 
-vstup:
-    dictionary ACTOR a cesta k finalnemu suboru
+input:
+    dictionary ACTOR and the path to the final file
     
-vystup:
-    subor je zapisany
+output:
+    the file is written
 """
+
+
 def sort(ACTOR, final_file):
     print("\nrun SORT, WRITE AND INDEXING...")
     print("\trun sort...")
