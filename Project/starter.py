@@ -10,7 +10,6 @@ import lib.search as search
 """
 global variables that determine the paths to files
 """
-input_file = 'tmp/freebase-rdf-latest.gz'
 actors_file = "etc/parse/actors.gz"
 performances_file = "etc/parse/performances.gz"
 other_file = "etc/parse/other.gz"
@@ -29,7 +28,7 @@ run the dump function
 """
 cmd = input("\nDo you want to run a dump? [y|n]: ")
 if cmd == "y":
-    dump.dump(input_file, actors_file, performances_file, other_file)
+    dump.dump(actors_file, performances_file, other_file)
 
 elif cmd != "n":
     print("ERROR: Unknown input")
