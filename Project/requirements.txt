@@ -19,6 +19,8 @@ bkcharts==0.2
 bleach==3.1.0
 bokeh==1.0.4
 boto==2.49.0
+bottle==0.12.19
+bottle-websocket==0.2.9
 Bottleneck==1.2.1
 cached-property==1.5.1
 certifi==2019.9.11
@@ -43,6 +45,7 @@ decorator==4.4.0
 defusedxml==0.5.0
 distributed==1.26.0
 docutils==0.14
+Eel==0.14.0
 entrypoints==0.3
 et-xmlfile==1.0.1
 fastcache==1.0.2
@@ -50,6 +53,7 @@ filelock==3.0.10
 Flask==1.0.2
 future==0.17.1
 gevent==1.4.0
+gevent-websocket==0.10.1
 glob2==0.6
 greenlet==0.4.15
 h5py==2.9.0
@@ -202,6 +206,7 @@ virtualenv-clone==0.5.3
 wcwidth==0.1.7
 webencodings==0.5.1
 Werkzeug==0.14.1
+whichcraft==0.6.1
 Whoosh==2.7.4
 widgetsnbextension==3.4.2
 win-inet-pton==1.1.0
