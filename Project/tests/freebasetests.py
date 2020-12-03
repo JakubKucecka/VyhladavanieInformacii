@@ -1,7 +1,7 @@
-from lib import index
-from unittest import mock
 import sys
 sys.path.insert(1, '../')
+from lib import index
+from unittest import mock
 
 index_dir = "../etc/index"
 

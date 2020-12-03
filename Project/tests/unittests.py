@@ -1,3 +1,5 @@
+import sys
+sys.path.insert(1, '../')
 from lib import dump
 from lib import pars
 from lib import pair
@@ -5,8 +7,6 @@ from lib import sort
 from lib import index
 from unittest import mock
 import gzip
-import sys
-sys.path.insert(1, '../')
 
 input_file = 'data/tmp_film.gz'
 actors_file = "data/actors.gz"
