@@ -28,7 +28,7 @@ run the dump function
 """
 cmd = input("\nDo you want to run a dump? [y|n]: ")
 if cmd == "y":
-    dump.dump(actors_file, performances_file, other_file)
+    dump.dump(actors_file, performances_file, other_file, 0)
 
 elif cmd != "n":
     print("ERROR: Unknown input")

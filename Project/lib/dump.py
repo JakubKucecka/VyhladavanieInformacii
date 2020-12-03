@@ -9,15 +9,18 @@ import re
 according to regex, it divides the rows into appropriate files
 
 input:
-    path to the relevant files
+    path to the relevant files, and test feature
     
 output:
     registered files
 """
 
 
-def dump(actors_file, performances_file, other_file):
-    cmd = input("\nAre you sure you want to overwrite the other.gz, performance.gz and actor.gz files? [y|n]: ")
+def dump(actors_file, performances_file, other_file, test):
+    if not test:
+        cmd = input("\nAre you sure you want to overwrite the other.gz, performance.gz and actor.gz files? [y|n]: ")
+    else:
+        cmd = "y"
     if cmd == "y":
         file_name = input("\nEnter full path to the file: ")
 
