@@ -77,7 +77,10 @@ def search_actor(index_dir, query_str):
                     query_array = str(query).split('AND')
                     query_array_tmp = []
                     for q in query_array:
-                        query_array_tmp.append(str(q)[str(q).index(":") + 1:-1])
+                        if len(query_array) == 1:
+                            query_array_tmp.append(str(q)[str(q).index(":") + 1:])
+                        else:
+                            query_array_tmp.append(str(q)[str(q).index(":") + 1:-1])
                     query_tmp = " ".join(query_array_tmp)
                     actors_array.append({'names': r['names'], 'data': r['data'], 'films': r['films'],
                                          'query': query_tmp})
@@ -92,7 +95,10 @@ def search_actor(index_dir, query_str):
                     query_array = str(query).split('AND')
                     query_array_tmp = []
                     for q in query_array:
-                        query_array_tmp.append(str(q)[str(q).index(":") + 1:-1])
+                        if len(query_array) == 1:
+                            query_array_tmp.append(str(q)[str(q).index(":") + 1:])
+                        else:
+                            query_array_tmp.append(str(q)[str(q).index(":") + 1:-1])
                     query_tmp = " ".join(query_array_tmp)
                     actors_array.append({'names': r['names'], 'data': r['data'], 'films': r['films'],
                                          'query': query_tmp})
@@ -108,7 +114,10 @@ def search_actor(index_dir, query_str):
                         query_array = str(query).split('AND')
                         query_array_tmp = []
                         for q in query_array:
-                            query_array_tmp.append(str(q)[str(q).index(":") + 1:-1])
+                            if len(query_array) == 1:
+                                query_array_tmp.append(str(q)[str(q).index(":") + 1:])
+                            else:
+                                query_array_tmp.append(str(q)[str(q).index(":") + 1:-1])
                         query_tmp = " ".join(query_array_tmp)
                         actors_array.append({'names': r['names'], 'data': r['data'], 'films': r['films'],
                                              'query': query_tmp})
