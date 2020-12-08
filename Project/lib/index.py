@@ -128,13 +128,18 @@ def search_actor(index_dir, query_str):
 
                     cmd = input("Enter num of actor or 'e' for end: ")
                 else:
+                    print("Actor not found!")
                     return -1
 
     if not cmd.isdigit() or cmd == "e":
+        print("Actor not found!")
         return -2
     else:
         if cmd:
             i = int(cmd) - 1
+        if not len(actors_array):
+            print("Actor not found!")
+            return -1
         return actors_array[i]
 
 
@@ -250,10 +255,13 @@ def search_film(index_dir, query_str):
                     else:
                         return -1
                 elif cmd == "n":
+                    print("Movie not found!")
                     return -1
                 else:
+                    print("Movie not found!")
                     return -2
             else:
+                print("Movie not found!")
                 return -1
 
     if cmd != "y" and cmd != "n":
