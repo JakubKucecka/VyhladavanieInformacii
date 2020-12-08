@@ -74,18 +74,28 @@ def search_actor(index_dir, query_str):
                 print("I find more then one " + query_str + ", didn't you mean?")
                 j = 1
                 for r in results:
+                    query_array = str(query).split('AND')
+                    query_array_tmp = []
+                    for q in query_array:
+                        query_array_tmp.append(str(q)[str(q).index(":") + 1:-1])
+                    query_tmp = " ".join(query_array_tmp)
                     actors_array.append({'names': r['names'], 'data': r['data'], 'films': r['films'],
-                                         'query': str(query)[str(query).index(":") + 1:]})
+                                         'query': query_tmp})
                     names = r['names'].split('\t')
-                    print("\t[" + str(j) + "] " + str(query)[str(query).index(":") + 1:] + " -> "
+                    print("\t[" + str(j) + "] " + query_tmp + " -> "
                           + ", ".join(names) + " -> born: " + r['data'][0] + " died: " + r['data'][1])
                     j += 1
 
                 cmd = input("Enter num of actor or 'e' for end: ")
             else:
                 for r in results:
+                    query_array = str(query).split('AND')
+                    query_array_tmp = []
+                    for q in query_array:
+                        query_array_tmp.append(str(q)[str(q).index(":") + 1:-1])
+                    query_tmp = " ".join(query_array_tmp)
                     actors_array.append({'names': r['names'], 'data': r['data'], 'films': r['films'],
-                                         'query': str(query)[str(query).index(":") + 1:]})
+                                         'query': query_tmp})
         else:
             corrected = searcher.correct_query(query, query_str)
 
@@ -95,10 +105,15 @@ def search_actor(index_dir, query_str):
                     print("I didn't find " + query_str + ", didn't you mean?")
                     j = 1
                     for r in results:
+                        query_array = str(query).split('AND')
+                        query_array_tmp = []
+                        for q in query_array:
+                            query_array_tmp.append(str(q)[str(q).index(":") + 1:-1])
+                        query_tmp = " ".join(query_array_tmp)
                         actors_array.append({'names': r['names'], 'data': r['data'], 'films': r['films'],
-                                             'query': str(query)[str(query).index(":") + 1:]})
+                                             'query': query_tmp})
                         names = r['names'].split('\t')
-                        print("\t[" + str(j) + "] " + str(query)[str(query).index(":") + 1:] + " -> "
+                        print("\t[" + str(j) + "] " + query_tmp + " -> "
                               + ", ".join(names) + " -> born: " + r['data'][0] + " died: " + r['data'][1])
                         j += 1
 
