@@ -55,8 +55,11 @@ def test_count_actor_8():
 
 
 def test_count_actor_9():
+    original_input = mock.builtins.input
+    mock.builtins.input = lambda _: "1"
     output = index.search_actor(index_dir, "Chuck Norris")
     assert len(output['films'].split('@')) == 40
+    mock.builtins.input = original_input
 
 
 def test_count_actor_10():
@@ -90,8 +93,11 @@ def test_count_actor_15():
 
 
 def test_count_actor_16():
+    original_input = mock.builtins.input
+    mock.builtins.input = lambda _: "1"
     output = index.search_actor(index_dir, "Jackie Chan")
     assert len(output['films'].split('@')) == 131
+    mock.builtins.input = original_input
 
 
 def test_count_actor_17():

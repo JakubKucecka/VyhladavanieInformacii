@@ -267,3 +267,21 @@ def test_actor_exit():
     output = index.search_actor(index_dir, "viKtor arKo")
     assert output == -2
     mock.builtins.input = original_input
+
+
+def test_actor_second_name():
+    output1 = index.search_actor(index_dir, "Victor Argo")
+    original_input = mock.builtins.input
+    mock.builtins.input = lambda _: "1"
+    output2 = index.search_actor(index_dir, "argo")
+    assert output1['films'] == output2['films']
+    mock.builtins.input = original_input
+
+
+def test_actor_second_name_correction():
+    output1 = index.search_actor(index_dir, "Victor Argo")
+    original_input = mock.builtins.input
+    mock.builtins.input = lambda _: "1"
+    output2 = index.search_actor(index_dir, "arKo")
+    assert output1['films'] == output2['films']
+    mock.builtins.input = original_input

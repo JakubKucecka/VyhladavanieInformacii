@@ -20,7 +20,7 @@ output:
 def index(index_dir, final_file):
     print("\trun index...")
     analyzer = SimpleAnalyzer(expression=r"[\w,.\"\\\-:\'_ ]+")
-    schema = Schema(names=TEXT(stored=True, analyzer=analyzer), data=STORED,
+    schema = Schema(names=TEXT(stored=True), data=STORED,
                     films=TEXT(stored=True, analyzer=analyzer))
     if not os.path.exists(index_dir):
         os.mkdir(index_dir)
@@ -65,7 +65,7 @@ def search_actor(index_dir, query_str):
     cmd = '0'
 
     with ix.searcher() as searcher:
-        query = QueryParser("names", ix.schema).parse('"' + query_str + '"')
+        query = QueryParser("names", ix.schema).parse(query_str)
 
         results = searcher.search(query, terms=True)
 
